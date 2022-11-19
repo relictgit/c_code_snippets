@@ -1,0 +1,3 @@
+this is some text
+This:text:is:separated:by:colons.
+Here we find nothing interesting!
