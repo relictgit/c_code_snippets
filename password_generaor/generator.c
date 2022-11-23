@@ -30,7 +30,8 @@ void generator(unsigned long passwd_len) {
   // printf("-----debug-----\nselector number: %i\n", num_selectors);
 
   // initialization of the password variable
-  // char passwd[passwd_len]; // vla initialization is not working in C
+  // char passwd[passwd_len]; // variable length array (vla) initialization is
+  // not working in C
   char *passwd = (char *)calloc(passwd_len, sizeof(char));
 
   if (passwd == NULL) {
