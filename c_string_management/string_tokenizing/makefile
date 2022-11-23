@@ -4,7 +4,7 @@ CC             :=  gcc
 WFLAGS         := -Wall -Wextra -Wpedantic -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wfloat-conversion -Wformat=2 -Werror=vla -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference
 OFLAG          := -O2
 
-DEBUGFLAG      := -g
+DEBUGFLAG      := -O0 -g
 CFLAGS         := $(WFLAGS) $(OFLAG)
 
 all: $(target)
