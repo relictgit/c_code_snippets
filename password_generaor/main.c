@@ -3,14 +3,10 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  int passwd_lenght = 0;
-
-  /* printf("Enter a length for the password that needs to be provided!\nYour "
-         "Passwd length: ");
-  scanf("%d", &passwd_lenght); */
+  long unsigned passwd_lenght = 0;
 
   if (argc == 2) {
-    passwd_lenght = atoi(argv[1]);
+    passwd_lenght = (long unsigned)atoi(argv[1]);
     generator(passwd_lenght);
     return EXIT_SUCCESS;
   } else {

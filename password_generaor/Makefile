@@ -1,8 +1,11 @@
 target         :=  passwd_generate
 objs           :=  generator.o main.o 
-
 CC             :=  gcc
-CFLAGS         :=  -Wall -Werror -lm
+WFLAGS         := -Wall -Wextra -Wpedantic -Wshadow  -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wfloat-conversion -Wformat=2 -Werror=vla -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference
+OFLAG          := -O2
+
+DEBUGFLAG      := -g
+CFLAGS         := $(WFLAGS) $(OFLAG)
 
 all: $(target)
 

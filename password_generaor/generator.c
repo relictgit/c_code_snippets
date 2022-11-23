@@ -1,10 +1,11 @@
 #include "generator.h"
+#include <malloc.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-void generator(int passwd_len) {
+void generator(unsigned long passwd_len) {
   // prerequisite initializations
   int randomizer = 0;
   short num_selectors = 0;
@@ -30,13 +31,19 @@ void generator(int passwd_len) {
   // printf("-----debug-----\nselector number: %i\n", num_selectors);
 
   // initialization of the password variable
-  char passwd[passwd_len];
+  // char passwd[passwd_len]; // vla initialization is not working in C
+  char *passwd = (char *)calloc(passwd_len, sizeof(char));
+
+  if (passwd == NULL) {
+    fprintf(stderr, "ERROR: Memory not allocated!\n");
+    exit(EXIT_FAILURE);
+  }
 
   // to select the randomizer inside the loop
   randomizer = rand() % num_selectors;
 
   // build up the password string and print it as the output onto the screen
-  for (int counter = 0; counter < passwd_len; ++counter) {
+  for (long unsigned counter = 0; counter < passwd_len; ++counter) {
     if (randomizer == 1) {
       passwd[counter] = digits[rand() % max_digit_num];
       randomizer = rand() % num_selectors;
