@@ -1,4 +1,4 @@
-target         :=  password_gen
+target         :=  bin
 objs           :=  generator.o main.o 
 CC             :=  gcc
 WFLAGS         := -Wall -Wextra -Wdouble-promotion -Wpedantic -Wshadow -Wcast-align -Wunused -Wpedantic -Wconversion -Wsign-conversion -Wfloat-conversion -Wundef -Wformat=2 -Wformat-truncation -Werror=vla -Werror=format-security -Werror=implicit-function-declaration -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference
@@ -13,7 +13,7 @@ deps           :=  $(patsubst %.o,%.d,$(objs))
 -include $(deps)
 DEPFLAGS = -MMD -MF $(@:.o=.d)
 
-password_gen: $(objs)
+bin: $(objs)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
