@@ -32,7 +32,12 @@ void generator(unsigned long passwd_len) {
   // initialization of the password variable
   // char passwd[passwd_len]; // variable length array (vla) initialization is
   // not working in C
-  char *passwd = (char *)calloc(passwd_len, sizeof(char));
+  // working around with dynamic memory allocation (allocating memory screams
+  // for de-allocating it in the end!)
+  char *passwd = (char *)calloc(
+      passwd_len,
+      sizeof(char)); // normally it is not whise to cast malloc or calloc. You
+                     // need to know what you are doing at this point.
 
   if (passwd == NULL) {
     fprintf(stderr, "ERROR: Memory not allocated!\n");
@@ -62,5 +67,6 @@ void generator(unsigned long passwd_len) {
       printf("%c", passwd[counter]);
     }
   }
+  free(passwd);
   printf("\n");
 }
