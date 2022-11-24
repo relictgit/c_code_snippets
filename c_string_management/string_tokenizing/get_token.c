@@ -16,7 +16,7 @@ void get_specific_token_referenze(char string[], char delimeter[], int position,
   }
 }
 
-char *get_specific_token(char string[], char delimeter[], int position) {
+char *get_specific_token_value(char string[], char delimeter[], int position) {
   char *string_token = NULL;
   string_token = strtok(string, delimeter);
   if (string_token == NULL) {
@@ -38,9 +38,9 @@ void tokenize_string() {
   printf("string1: %s\nstring2: %s\n", string1, string2);
   char *string_token = NULL;
   char delimeter[] = ":";
-  int position = 2;
+    int position = 1;
   printf("string1 tokenised by position %d\n and by call by value: %s\n",
-         position, get_specific_token(string1, delimeter, position));
+         position, get_specific_token_value(string1, delimeter, position));
   get_specific_token_referenze(string2, delimeter, position, &string_token);
   printf("string2 tokenized by position: %d\ncall by referenze output: %s\n",
          position, string_token);
