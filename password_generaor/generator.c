@@ -8,9 +8,10 @@ void generator(unsigned long passwd_len) {
   // prerequisite initializations
   int randomizer = 0;
   short num_selectors = 0;
-  short max_digit_num = 10;
-  short max_symbol_num = 10;
-  short max_letter_num = 26;
+  short max_digit_num = 0;
+  short max_symbol_num = 0;
+  short max_letter_num = 0;
+  short iterator;
 
   // seed the random number generator
   // with the current time so that the
@@ -19,13 +20,22 @@ void generator(unsigned long passwd_len) {
 
   // char sets of the characters to choose from
   // note: char arrays are recommended to be set to a fixed size
-  char digits[10] = "0123456789";
+  char digits[] = "0123456789";
+  for (iterator = 0; digits[iterator] != '\0'; iterator++) {
+    ++max_digit_num;
+  }
   ++num_selectors;
-  char letters_lower[26] = "abcdefghijklmnopqrstuvwxyz";
+  char letters_lower[] = "abcdefghijklmnopqrstuvwxyz";
+  for (iterator = 0; letters_lower[iterator] != '\0'; iterator++) {
+    ++max_letter_num;
+  }
   ++num_selectors;
-  char letters_upper[26] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  char letters_upper[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   ++num_selectors;
-  char symbols[10] = "!@_-$^&*%?";
+  char symbols[] = "!#$%'()*+-./:?@[]^_`{}~";
+  for (iterator = 0; symbols[iterator] != '\0'; iterator++) {
+    ++max_symbol_num;
+  }
   ++num_selectors;
   // printf("-----debug-----\nselector number: %i\n", num_selectors);
 
