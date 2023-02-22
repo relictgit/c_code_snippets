@@ -1,0 +1,45 @@
+target      :=  bin
+CODEDIRS    :=  . ./src
+INCDIRS     :=  . ./headers # can be list
+BACK        :=  backup.tgz
+
+CC          :=  gcc
+OPT         :=  -O2
+DEBUG       :=  -O0 -g
+# generate files that encode make rules for the .h dependencies
+DEPFLAGS    :=  -MP -MD
+# automatically add the -I onto each include directory
+CFLAGS      :=  -Wall -Werror -Wextra $(foreach D,$(INCDIRS), -I$(D)) $(OPT) $(DEPFLAGS)
+
+# for-style iteration (foreach) and regular expression completions (wildcard)
+CFILES      :=  $(foreach D,$(CODEDIRS),$(wildcard $(D)/*.c))
+# regular expression replacemen
+OBJ         :=  $(patsubst %.c,%.o,$(CFILES))
+DEPFILES    :=  $(patsubst %.c,%.d,$(CFILES))
+
+# include the dependencies
+-include $(DEPFILES)
+
+all:  $(target)
+
+$(target):  $(OBJ)
+  $(CC) -o $@ $^
+
+# only want the .c file dependency here, thus $< instead of $^
+%.o: %.c
+  $(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+  rm -rf $(target) $(OBJ) $(DEPFILES) $(DISTRIBUTE)
+
+# shell commands are a set of keystrokes away
+distribute: clean
+  tar czvf $(BACK) *
+
+# @ silences the printing of the command
+# $(info ...) prints output
+
+diff:
+  $(info The status of the repository, and the volume of per-file changes:)
+  @git status
+  @git diff --stat
