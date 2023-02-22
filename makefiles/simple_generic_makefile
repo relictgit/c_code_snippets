@@ -1,0 +1,21 @@
+target    :=  exe
+objs      :=  main.o
+
+CC        :=  gcc
+OPT       :=  -O2
+CFLAGS    :=  -Wall -Werror
+
+all: $(target)
+
+deps      :=  $(patsubst %.o,%.d,$(objs))
+-include $(deps)
+DEPFLAGS  = -MD -MF $(@:.o=.d)
+
+$(target): $(objs)
+  $(CC) $(CFLAGS) -o $@ $^
+
+# regular expression where % is a wildcard
+%.o: %.c
+  $(CC) $(CFLAGS) -c $< $(DEPFLAGS)
+clean:
+  rm -f $(target) $(objs) $(deps)
