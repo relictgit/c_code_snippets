@@ -56,7 +56,10 @@ void generator(unsigned long passwd_len) {
                      // need to know what you are doing at this point.
 
   if (passwd == NULL) {
-    fprintf(stderr, "ERROR: Memory not allocated!\n");
+    fprintf(stderr, "ERROR: Memory not allocated for the password length!\n"
+                    "Memory allocation problem.\n"
+                    "Please check your existing RAM and running processes as a "
+                    "first analysis starting point.\n");
     exit(EXIT_FAILURE);
   }
 
