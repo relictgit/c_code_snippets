@@ -11,7 +11,13 @@ void generator(unsigned long passwd_len) {
   short max_digit_num = 0;
   short max_symbol_num = 0;
   short max_letter_num = 0;
+  // short max_umlauts_num = 0;
   short iterator;
+  char digits[] = "0123456789";
+  char letters_lower[] = "abcdefghijklmnopqrstuvwxyz";
+  char letters_upper[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  char symbols[] = "!#$%'()*+-./:?@[]^_`{}~";
+  // char german_umlauts[] = "äöüÄÖÜ";
 
   // seed the random number generator
   // with the current time so that the
@@ -20,23 +26,23 @@ void generator(unsigned long passwd_len) {
 
   // char sets of the characters to choose from
   // note: char arrays are recommended to be set to a fixed size
-  char digits[] = "0123456789";
   for (iterator = 0; digits[iterator] != '\0'; iterator++) {
     ++max_digit_num;
   }
   ++num_selectors;
-  char letters_lower[] = "abcdefghijklmnopqrstuvwxyz";
   for (iterator = 0; letters_lower[iterator] != '\0'; iterator++) {
     ++max_letter_num;
   }
   ++num_selectors;
-  char letters_upper[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   ++num_selectors;
-  char symbols[] = "!#$%'()*+-./:?@[]^_`{}~";
   for (iterator = 0; symbols[iterator] != '\0'; iterator++) {
     ++max_symbol_num;
   }
   ++num_selectors;
+  /* for (iterator = 0; german_umlauts[iterator] != '\0'; iterator++) {
+    ++max_umlauts_num;
+  }
+  ++num_selectors; */
   // printf("-----debug-----\nselector number: %i\n", num_selectors);
 
   // initialization of the password variable
@@ -71,11 +77,15 @@ void generator(unsigned long passwd_len) {
       passwd[counter] = letters_upper[rand() % max_letter_num];
       randomizer = rand() % num_selectors;
       printf("%c", passwd[counter]);
-    } else {
+    } else /*if (randomizer == 4)*/ {
       passwd[counter] = symbols[rand() % max_symbol_num];
       randomizer = rand() % num_selectors;
       printf("%c", passwd[counter]);
-    }
+    } /*else {
+      passwd[counter] = german_umlauts[rand() % max_umlauts_num];
+      randomizer = rand() % num_selectors;
+      printf("%c", passwd[counter]);
+    } */
   }
   free(passwd);
   printf("\n");
