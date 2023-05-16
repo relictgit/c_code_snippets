@@ -9,6 +9,8 @@
 
 long int calculateFileSize(char *filePath);
 
+void printFileSize(long int fileSize);
+
 void exploreDirectory(char *dirPath, long int *totalSize);
 
 int main(int argc, char *argv[]) {
@@ -19,7 +21,9 @@ int main(int argc, char *argv[]) {
 
   long int totalSize = 0;
   exploreDirectory(argv[1], &totalSize);
-  printf("Total size: %ld bytes\n", totalSize);
+  // printf("Total size: %ld bytes\n", totalSize);
+  printf("Total size: ");
+  printFileSize(totalSize);
 
   return 0;
 }
@@ -44,7 +48,9 @@ void exploreDirectory(char *dirPath, long int *totalSize) {
       exploreDirectory(childPath, totalSize);
     } else {
       long int fileSize = calculateFileSize(childPath);
-      printf("%s, %ld bytes\n", childPath, fileSize);
+      // printf("%s, %ld bytes\n", childPath, fileSize);
+      printf("%s:", childPath);
+      printFileSize(fileSize);
       *totalSize += fileSize;
     }
   }
@@ -57,6 +63,28 @@ long int calculateFileSize(char *filePath) {
   stat(filePath, &st);
 
   return st.st_size;
+}
+
+void printFileSize(long int fileSize) {
+  char result[20]; // Array für das Ergebnis der sprintf Funktion
+  const char *fileSizeUnits[] = {"Bytes", "KB", "MB", "GB",
+                                 "TB"}; // Array mit den Größenordnungen
+
+  // Berechnung der Größenordnung und Umwandlung in die entsprechende Einheit
+  int unitIndex = 0;
+  double size = (double)fileSize;
+  while (size >= 1024.0 &&
+         unitIndex < 4) { // < 4 is the max count value of elements inside of
+                          // the fileSizeUnits array
+    size /= 1024.0;
+    unitIndex++;
+  }
+
+  // Formatieren des Ergebnisses mit "sprintf"
+  sprintf(result, "%.2f %s", size, fileSizeUnits[unitIndex]);
+
+  // Ausgabe des Ergebnisses auf der Konsole
+  printf("\t%s\n", result);
 }
 
 /* embedding python
@@ -89,4 +117,44 @@ konvertiert.
 * https://docs.python.org/3/extending/embedding.html
 *
 * oder einfach eine C Funktion schreiben, die genau das gleiche macht.
+*
+* rein weitergemacht mit C:
+Ja, das ist möglich! Es gibt eine Funktion namens "sprintf", welche ähnlich wie
+"printf" funktioniert, jedoch anstelle der Ausgabe auf der Konsole eine
+Zeichenkette zurückgibt. Sie können diese Funktion verwenden, um die Größe von
+Dateien in verschiedenen Größenordnungen darzustellen.
+
+Eine mögliche Umsetzung könnte folgendermaßen aussehen:
+
+void printFileSize(long int fileSize) {
+char result[20]; // Array für das Ergebnis der sprintf Funktion
+const char* fileSizeUnits[] = {"Bytes", "KB", "MB", "GB", "TB"}; // Array mit
+den Größenordnungen
+
+// Berechnung der Größenordnung und Umwandlung in die entsprechende Einheit
+int unitIndex = 0;
+double size = (double)fileSize;
+while (size >= 1024.0 && unitIndex < 4) {
+size /= 1024.0;
+unitIndex++;
+}
+
+// Formatieren des Ergebnisses mit "sprintf"
+sprintf(result, "%.2f %s", size, fileSizeUnits[unitIndex]);
+
+// Ausgabe des Ergebnisses auf der Konsole
+printf("Die Dateigröße beträgt %s\n", result);
+}
+
+Mit dieser Funktion können Sie die Größe von Dateien in verschiedenen
+Größenordnungen ausgeben.
+
+Beispielaufruf:
+
+long int fileSize = 1234567890;
+printFileSize(fileSize);
+
+Ausgabe:
+
+Die Dateigröße beträgt 1.15 GB
 */
