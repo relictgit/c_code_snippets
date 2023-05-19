@@ -67,14 +67,30 @@ long int calculateFileSize(char *filePath) {
 
 void printFileSize(long int fileSize) {
   char result[20]; // Array für das Ergebnis der sprintf Funktion
+  /* Array mit den Größenordnungen */
+  /* mögliche Größenordnungen / Byte Vielfache sind:
+   * Bytes
+   * Kilobytes
+   * Megabytes
+   * Gigabytes
+   * Terrabtes
+   * Petabytes
+   * Exabytes
+   * Zettabytes
+   * Yottabytes
+   * Ronnabytes
+   * Quettabytes
+   * siehe Dazu auch die Abbildung aus Wikipedia als Vorschaumatterial: https://de.wikipedia.org/wiki/Byte#Vergleichstabelle
+   */
   const char *fileSizeUnits[] = {"Bytes", "KB", "MB", "GB",
-                                 "TB"}; // Array mit den Größenordnungen
+                                 "TB", "PB", "EB", "ZB",
+                                 "YB", "RB", "QB"};
 
   // Berechnung der Größenordnung und Umwandlung in die entsprechende Einheit
   int unitIndex = 0;
   double size = (double)fileSize;
   while (size >= 1024.0 &&
-         unitIndex < 4) { // < 4 is the max count value of elements inside of
+         unitIndex < 10) { // < 10 is the max count value of elements inside of
                           // the fileSizeUnits array
     size /= 1024.0;
     unitIndex++;
@@ -86,75 +102,3 @@ void printFileSize(long int fileSize) {
   // Ausgabe des Ergebnisses auf der Konsole
   printf("\t%s\n", result);
 }
-
-/* embedding python
-```python
-def convert_size(size_bytes):
-"""
-Converts bytes to appropriate unit
-"""
-if size_bytes < 1024:
-return f"{size_bytes} Bytes"
-elif 1024 <= size_bytes < 1048576:
-return f"{size_bytes / 1024:.2f} KB"
-elif 1048576 <= size_bytes < 1073741824:
-return f"{size_bytes / 1048576:.2f} MB"
-elif 1073741824 <= size_bytes < 1099511627776:
-return f"{size_bytes / 1073741824:.2f} GB"
-else:
-return f"{size_bytes / 1099511627776:.2f} TB"
-```
-* Um diese Funktion in deinem bestehenden Programm zu verwenden,
-* musst du nur den Aufruf
-* `print(f"Size: {os.path.getsize(file_path)}")` in
-* `print(f"Size: {convert_size(os.path.getsize(file_path))}")`
-* ändern.
-* Dadurch wird die Bytegröße automatisch in eine besser lesbare Einheit
-konvertiert.
-*
-* matterial:
-* https://docs.python.org/3/library/stdtypes.html#mapping-types-dict
-* https://docs.python.org/3/extending/embedding.html
-*
-* oder einfach eine C Funktion schreiben, die genau das gleiche macht.
-*
-* rein weitergemacht mit C:
-Ja, das ist möglich! Es gibt eine Funktion namens "sprintf", welche ähnlich wie
-"printf" funktioniert, jedoch anstelle der Ausgabe auf der Konsole eine
-Zeichenkette zurückgibt. Sie können diese Funktion verwenden, um die Größe von
-Dateien in verschiedenen Größenordnungen darzustellen.
-
-Eine mögliche Umsetzung könnte folgendermaßen aussehen:
-
-void printFileSize(long int fileSize) {
-char result[20]; // Array für das Ergebnis der sprintf Funktion
-const char* fileSizeUnits[] = {"Bytes", "KB", "MB", "GB", "TB"}; // Array mit
-den Größenordnungen
-
-// Berechnung der Größenordnung und Umwandlung in die entsprechende Einheit
-int unitIndex = 0;
-double size = (double)fileSize;
-while (size >= 1024.0 && unitIndex < 4) {
-size /= 1024.0;
-unitIndex++;
-}
-
-// Formatieren des Ergebnisses mit "sprintf"
-sprintf(result, "%.2f %s", size, fileSizeUnits[unitIndex]);
-
-// Ausgabe des Ergebnisses auf der Konsole
-printf("Die Dateigröße beträgt %s\n", result);
-}
-
-Mit dieser Funktion können Sie die Größe von Dateien in verschiedenen
-Größenordnungen ausgeben.
-
-Beispielaufruf:
-
-long int fileSize = 1234567890;
-printFileSize(fileSize);
-
-Ausgabe:
-
-Die Dateigröße beträgt 1.15 GB
-*/
