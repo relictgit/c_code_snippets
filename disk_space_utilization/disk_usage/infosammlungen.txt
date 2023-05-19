@@ -1,0 +1,73 @@
+QA:
+
+Frage: wie kann man das nachempfundene Programm du um Optionen erweitern,
+sodass das Programm mit und ohne Optionen umgehen kann?
+Wie kann man das Programm umändern, dass die angezeigte Maximaltiefe
+über eine Option einstellbar wird und die Maximalgröße des
+genutzten Speichers ausgeben lassen kann?
+
+AW: Du könntest folgendermaßen vorgehen:
+
+1. Füge dem Programm eine Option hinzu,
+um die maximale Tiefe anzugeben.
+Zum Beispiel könntest du die
+Option "-d" verwenden. Hier
+ist ein Beispiel, wie man ein
+Argument in C erkennt:
+
+if (argc > 2 && strcmp(argv[1], "-d") == 0) {
+int maxDepth = atoi(argv[2]);
+// do something with maxDepth...
+}
+
+2. Passe die Funktion "exploreDirectory" an,
+um die maximale Tiefe zu berücksichtigen.
+Du könntest das durch eine zusätzliche
+Parameterübergabe erreichen. Hier ist ein
+Beispiel, wie das aussehen könnte:
+
+void exploreDirectory(char *dirPath, long int *totalSize, int remainingDepth) {
+// ...
+if (remainingDepth > 0) {
+if (entry->d_type == DT_DIR) {
+exploreDirectory(childPath, totalSize, remainingDepth - 1);
+} else {
+// ...
+}
+} else {
+// display only the total size for this directory level
+printf("Total size for %s: ", dirPath);
+printFileSize(*totalSize);
+}
+// ...
+}
+
+3. Verwende die Option, um die maximale Tiefe zu setzen.
+Wenn keine Option angegeben wird, könnte man einfach
+die maximale Tiefe auf -1 (unbegrenzt) setzen.
+Hier ist ein Beispiel, wie das aussehen könnte:
+
+int main(int argc, char *argv[]) {
+int maxDepth = -1; // set default value
+if (argc > 2 && strcmp(argv[1], "-d") == 0) {
+maxDepth = atoi(argv[2]);
+argv += 2; // skip the option and its value
+argc -= 2; // decrease the argument count
+}
+if (argc < 2) {
+printf("Usage: %s [-d maxDepth] directoryPath\n", argv[0]);
+return 1;
+}
+
+long int totalSize = 0;
+exploreDirectory(argv[1], &totalSize, maxDepth);
+// printf("Total size: %ld bytes\n", totalSize);
+printf("Total size: ");
+printFileSize(totalSize);
+
+return 0;
+}
+
+Das war jetzt nur ein Beispiel, wie man das Problem lösen könnte.
+Natürlich könnte man das Programm auch noch auf andere Arten erweitern,
+z.B. um weitere Optionen oder um eine verbesserte Anzeige der Verzeichnisstruktur.
