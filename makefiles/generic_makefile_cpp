@@ -1,0 +1,41 @@
+# Compiler und Linker
+CXX       := g++
+CXXFLAGS  := -std=c++11 -O2 -Wall -Wextra -Wpedantic -Werror
+LD        := g++
+
+# Zielname
+TARGET    := exe
+
+# Verzeichnisse
+SRC_DIR   := src
+INC_DIR   := include
+OBJ_DIR   := obj
+
+# Quellcodedateien, Headerdateien und Objektdateien
+SRCS      := $(wildcard $(SRC_DIR)/*.cpp)
+INCS      := $(wildcard $(INC_DIR)/*.hpp)
+OBJS      := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+# Abhängigkeitsdateien
+DEPS      := $(OBJS:.o=.d)
+
+# Inkludieren der Abhängigkeitsdateien
+-include $(DEPS)
+
+# Optionen für die Generierung der Abhängigkeitsdateien
+DEPFLAGS  = -MT $@ -MMD -MP -MF $(OBJ_DIR)/$*.d
+
+# Erzeugung des Targets und Abhängigkeiten
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+    $(LD) $(LDFLAGS) -o $@ $^
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+    $(CXX) $(CXXFLAGS) $(DEPFLAGS) -c -o $@ $<
+
+# Bereinigung
+clean:
+    $(RM) $(TARGET) $(OBJS) $(DEPS)
+
+.PHONY: all clean
