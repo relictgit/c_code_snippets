@@ -1,9 +1,11 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-#define WIDTH 30
-#define HEIGHT 10
+void print_menu(WINDOW *menu_win, int highlight);
+void execute_command(char *command);
 
 int startx = 0;
 int starty = 0;
@@ -11,13 +13,20 @@ int starty = 0;
 char *choices[] = {
     "ls",
     "ls -la",
+    "df -h",
+    "quit",
 };
 int n_choices = sizeof(choices) / sizeof(char *);
 
-void print_menu(WINDOW *menu_win, int highlight);
-
 int main() {
+  // printf("sizeof(choices): %lu\nsizeof(char *): %lu\nn_choices: %lu\n",
+  //        sizeof(choices), sizeof(char *), sizeof(choices) / sizeof(char *));
   WINDOW *menu_win;
+  const int WIDTH = 30;
+  const int HEIGHT = 10;
+  const int OUTPUT_WIDTH = 80;
+  const int OUTPUT_HEIGHT = 14;
+  const int OUTPUT_STARTY = 12;
   int highlight = 1;
   int choice = 0;
   int c;
@@ -64,17 +73,28 @@ int main() {
     if (choice != 0)
       break;
   }
-  mvprintw(23, 0, "You chose choice %d with choice string %s\n", choice,
-           choices[choice - 1]);
-  refresh();
-  if (choice == 1) {
-    system("ls");
-  } else if (choice == 2) {
-    system("ls -la");
+  if (strcmp(choices[choice - 1], "quit") == 0) {
+    endwin();
+    return 0;
   }
-  getch();
-  endwin();
-  return 0;
+  // execute command and print output
+  WINDOW *output_win;
+  output_win = newwin(OUTPUT_HEIGHT, OUTPUT_WIDTH, OUTPUT_STARTY, 0);
+  scrollok(output_win, TRUE);
+  wprintw(output_win, "Command: %s\n\n", choices[choice - 1]);
+  wrefresh(output_win);
+  execute_command(choices[choice - 1]);
+  mvprintw(24, 0, "Press 'b' to go back to the main menu");
+  refresh();
+  while (1) {
+    c = getch();
+    if (c == 'b') {
+      break;
+    }
+  }
+  delwin(output_win);
+  main();
+  // return 0;
 }
 
 void print_menu(WINDOW *menu_win, int highlight) {
@@ -94,4 +114,32 @@ void print_menu(WINDOW *menu_win, int highlight) {
     ++y;
   }
   wrefresh(menu_win);
+}
+
+void execute_command(char *command) {
+  pid_t pid;
+  int status;
+  // char output[80];
+
+  pid = fork();
+
+  if (pid == -1) {
+    // Fork error
+    printf("Error creating child process\n");
+    exit(1);
+  } else if (pid == 0) {
+    // Child process
+    char *args[4];
+    args[0] = "/bin/sh";
+    args[1] = "-c";
+    args[2] = command;
+    args[3] = NULL;
+    dup2(STDOUT_FILENO, STDERR_FILENO);
+    dup2(fileno(stdout), fileno(stderr));
+    execv(args[0], args);
+    exit(1);
+  } else {
+    // Parent process
+    waitpid(pid, &status, 0);
+  }
 }
