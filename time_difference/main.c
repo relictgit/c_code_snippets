@@ -29,7 +29,7 @@ int main()
         min2;
   diff = (totalMin2 - totalMin1) / 60;
 
-  printf("Der Unterschied zwischen %02d.%02d.%04d %02d:%02d und %02d.%02d.%04d %02d:%02d beträgt %.2f Stunden.\n",
+  printf("Der Unterschied zwischen \n--> %02d.%02d.%04d %02d:%02d Uhr \n--> %02d.%02d.%04d %02d:%02d Uhr \n beträgt %.2f Stunden.\n",
          day1, month1, year1, hour1, min1, day2, month2, year2, hour2,
          min2, diff);
 
