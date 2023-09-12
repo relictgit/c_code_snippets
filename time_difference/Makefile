@@ -1,4 +1,4 @@
-target := bin
+target := tdiff
 objs :=  main.o
 
 CC := gcc
