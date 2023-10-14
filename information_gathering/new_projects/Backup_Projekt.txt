@@ -1,0 +1,35 @@
+Entwicklungsprojekt Backup + Deduplikation + Komprimierung mit Datenwiederherstellung {
+	Informationssammlung {
+		um ein Backup-Programm mit Deduplizierung und Komprimierung zu entwickeln,
+		gibt es einige Schritte, die du angehen musst:
+
+		1.	Überlege dir, welche Daten du sichern möchtest und wie du sie speichern willst.
+			Möchtest du einzelne Dateien oder ganze Ordner sichern?
+			Willst du die Daten in einem Archivfile speichern oder direkt auf eine externe Festplatte?
+
+		2.	Implementiere das deduplizierte Backup-System.
+			Es gibt verschiedene Algorithmen, um Redundanzen in Daten zu erkennen.
+			Eine Möglichkeit ist, die Daten in sogenannte Chunks zu unterteilen und
+			dann zu prüfen, ob ein Chunk bereits im Backup vorhanden ist. Wenn ja,
+			musst du ihn nicht noch einmal speichern. Für die Umsetzung dieser Idee
+			kannst du beispielsweise die Programmiersprache C verwenden.
+
+		3.	Integriere nun die Komprimierungsfunktion in das Backup-Programm.
+			Hier gibt es verschiedene Algorithmen, wie zum Beispiel
+			das beliebte zlib-Format. Auch hier bietet sich wieder die Programmiersprache C an.
+
+		4.	Achte darauf, dass das Backup-Programm effizient arbeitet und
+			nicht zu viel Speicher oder CPU-Ressourcen verbraucht.
+			Meistens wird für die Entwicklung eines solchen Programms
+			auch eine Testumgebung benötigt, um die Stabilität und Leistung zu überprüfen.
+
+		5.	Vergiss außerdem nicht, dass ein Backup-Programm auch eine Möglichkeit bieten sollte,
+			die Backup-Daten wieder herstellen zu können. Das kann bedeutet,
+			dass das Programm auch ein Wiederherstellungstool beinhalten sollte.
+
+		Wenn du dich für die Programmiersprache Rust entscheidest,
+		kannst du auch ein ähnliches Vorgehen wählen. Rust ist eine relativ junge Sprache,
+		die sich durch Performance und Sicherheit auszeichnet.
+		Allerdings gibt es zurzeit weniger Tools und Bibliotheken für Rust als für C.
+	}
+}

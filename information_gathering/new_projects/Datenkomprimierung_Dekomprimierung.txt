@@ -1,0 +1,401 @@
+Grundskizze
+===========
+
+Hallo,
+
+es gibt viele verschiedene Algorithmen zur Datenkomprimierung,
+und die Wahl hängt oft von den spezifischen Anforderungen des
+Anwendungsfalls ab. Einer der am häufigsten verwendeten und
+effizientesten Algorithmen ist der LZ77/LZ78-Algorithmus.
+
+Der LZ77/LZ78-Algorithmus arbeitet durch Ersetzung von
+wiederholten Zeichenfolgen in einer Datenmenge durch
+Verweise auf die zuvor verwendeten Zeichenfolgen
+Dadurch können redundante Daten effektiv entfernt
+werden, was zu einer signifikanten Kompressionsrate
+führt. Um den Algorithmus in C zu implementieren,
+können Sie eine Funktion schreiben, die die Daten
+als Eingabe erhält und eine komprimierte Version der
+Daten als Ausgabe zurückgibt. Sie können auch eine
+separate Funktion schreiben, um die komprimierten Daten
+zu dekomprimieren und die ursprünglichen Daten wiederherzustellen.
+
+Hier ist ein Beispiel für die Implementierung des LZ77/LZ78-Algorithmus in C:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define WINDOW_SIZE 4096
+#define MAX_MATCH_LENGTH 18
+
+typedef struct {
+int offset;
+int length;
+char next_char;
+} match_t;
+
+int find_match(char *data, int data_len, int cur_pos, match_t *match) {
+int best_offset = -1;
+int best_length = -1;
+int max_offset = cur_pos - 1;
+char *cur_match, *window_end;
+int match_len, i, j;
+
+if (cur_pos + MAX_MATCH_LENGTH >= data_len) {
+return 0;
+}
+
+for (i = cur_pos - WINDOW_SIZE; i < cur_pos; i++) {
+if (i < 0) {
+continue;
+}
+
+cur_match = data + i;
+window_end = data + cur_pos;
+match_len = 0;
+
+for (j = 0; j < MAX_MATCH_LENGTH && cur_match+j < window_end; j++) {
+if (*(cur_match+j) != *(cur_pos+j)) {
+break;
+}
+match_len++;
+}
+
+if (match_len > best_length) {
+best_offset = cur_pos - i;
+best_length = match_len;
+}
+}
+
+if (best_length > 2) {
+match->offset = best_offset;
+match->length = best_length;
+match->next_char = *(data+cur_pos+best_length);
+return 1;
+} else {
+return 0;
+}
+}
+
+int compress_data(char *data, int data_len, char **compressed_data) {
+int cur_pos = 0;
+int compressed_pos = 0;
+int max_compressed_size = data_len + (data_len / 16) + 16;
+char *compressed = malloc(max_compressed_size);
+match_t match;
+
+while (cur_pos < data_len) {
+if (find_match(data, data_len, cur_pos, &match)) {
+compressed[compressed_pos++] = match.offset & 0xFF;
+compressed[compressed_pos++] = (match.offset >> 8) & 0xFF;
+compressed[compressed_pos++] = (match.length - 3) & 0xFF;
+compressed[compressed_pos++] = match.next_char;
+cur_pos += match.length;
+} else {
+compressed[compressed_pos++] = 0;
+compressed[compressed_pos++] = 0;
+compressed[compressed_pos++] = 0;
+compressed[compressed_pos++] = *(data+cur_pos);
+cur_pos++;
+}
+}
+
+*compressed_data = compressed;
+return compressed_pos;
+}
+
+int decompress_data(char *compressed_data, int compressed_len, char **decompressed_data) {
+char *decompressed = malloc(WINDOW_SIZE + compressed_len);
+int cur_pos = 0;
+int decompressed_pos = 0;
+int offset, length, i;
+char next_char;
+
+while (cur_pos < compressed_len) {
+offset = compressed_data[cur_pos] | (compressed_data[cur_pos+1] << 8);
+length = compressed_data[cur_pos+2] + 3;
+next_char = compressed_data[cur_pos+3];
+
+if (offset == 0 && length == 0) {
+decompressed[decompressed_pos] = next_char;
+decompressed_pos++;
+cur_pos += 4;
+} else {
+for (i = 0; i < length; i++) {
+decompressed[decompressed_pos] = decompressed[decompressed_pos - offset];
+decompressed_pos++;
+}
+decompressed[decompressed_pos] = next_char;
+decompressed_pos++;
+cur_pos += 4;
+}
+}
+
+*decompressed_data = decompressed;
+return decompressed_pos;
+}
+
+int main() {
+char data[] = "Dies ist eine Testdatenfolge, die komprimiert werden soll. Es enthält viele wiederholte Zeichenfolgen.";
+char *compressed_data;
+char *decompressed_data;
+int data_len = strlen(data);
+int compressed_len, decompressed_len;
+
+compressed_len = compress_data(data, data_len, &compressed_data);
+decompressed_len = decompress_data(compressed_data, compressed_len, &decompressed_data);
+
+printf("Originaldaten: %s\n", data);
+printf("Komprimierte Daten: ");
+fwrite(compressed_data, compressed_len, 1, stdout);
+printf("\nDekomprimierte Daten: %s\n", decompressed_data);
+
+free(compressed_data);
+free(decompressed_data);
+
+return 0;
+}
+```
+
+Änderung auf weniger globale variablen
+======================================
+
+Ja, es ist sinnvoll, globale Variablen so weit wie möglich zu vermeiden und Funktionen zu nutzen, um Daten zwischen den Funktionen zu übergeben. Ein Ansatz hierfür könnte sein:
+
+1.	Definieren Sie eine Struktur, um die Daten zu speichern, die zwischen den
+	Funktionen übergeben werden müssen. Diese Struktur enthält Daten, die momentan global definiert sind.
+
+```
+typedef struct {
+char *data;
+int data_len;
+int cur_pos;
+int compressed_pos;
+char *compressed;
+} lz_data_t;
+```
+
+2.	Erstellen Sie eine Funktion zur Initialisierung der Datenstruktur und zur Zuweisung
+	der globalen Variablen. Diese Funktion nimmt Die Eingabezeichenfolge
+	und deren Länge als Parameter und gibt die initialisierte Datenstruktur zurück.
+
+```
+lz_data_t *initialize_lz_data(char *data, int data_len) {
+lz_data_t *lz_data = malloc(sizeof(lz_data_t));
+lz_data->data = data;
+lz_data->data_len = data_len;
+lz_data->cur_pos = 0;
+lz_data->compressed_pos = 0;
+lz_data->compressed = malloc(data_len + (data_len / 16) + 16);
+return lz_data;
+}
+```
+
+3.	Erstellen Sie eine Funktion, die freie
+	Datenstruktur und alle zugehörigen Variablen freigibt:
+
+```
+void free_lz_data(lz_data_t *lz_data) {
+free(lz_data->compressed);
+free(lz_data);
+}
+```
+
+4.	Stellen Sie eine Funktion zur Verfügung, um Matches in den Daten zu finden.
+	Diese Funktion verwendet die Datenstruktur, um die aktuellen Positionen und den Komprimierungsstatus zu speichern.
+
+```
+int find_match(lz_data_t *lz_data, match_t *match) {
+// TODO: Implement find_match using lz_data instead of global variables
+}
+```
+
+5.	Stellen Sie eine Funktion zur Verfügung, um Daten zu komprimieren.
+	Diese Funktion verwendet die Datenstruktur, um die aktuellen Positionen und den Komprimierungsstatus zu speichern.
+
+```
+int compress_data(lz_data_t *lz_data) {
+// TODO: Implement compress_data using lz_data instead of global variables
+}
+```
+
+6.	Stellen Sie eine Funktion zur Verfügung, um Daten zu dekomprimieren.
+
+```
+int decompress_data(char *compressed_data, int compressed_len, char **decompressed_data) {
+// TODO: Implement decompress_data using lz_data instead of global variables
+}
+```
+
+7.	Ändern Sie die `main`-Funktion, um die obigen Funktionen aufzurufen und keine globalen Variablen zu verwenden.
+
+```
+int main() {
+char data[] = "Dies ist eine Testdatenfolge, die komprimiert werden soll. Es enthält viele wiederholte Zeichenfolgen.";
+char *compressed_data;
+char *decompressed_data;
+int data_len = strlen(data);
+
+lz_data_t *lz_data = initialize_lz_data(data, data_len);
+
+compress_data(lz_data);
+printf("Originaldaten: %s
+", data);
+printf("Komprimierte Daten: ");
+fwrite(lz_data->compressed, lz_data->compressed_pos, 1, stdout);
+
+decompress_data(lz_data->compressed, lz_data->compressed_pos, &decompressed_data);
+printf("
+Dekomprimierte Daten: %s
+", decompressed_data);
+
+free_lz_data(lz_data);
+free(decompressed_data);
+
+return 0;
+}
+```
+
+Fehler fix "if (*(cur_match+j) != *(cur_pos+j)) {" => "indirect requires pointer operand ('int' invalid")"
+Code vorschlag und Abbildung auf das Codebeispiel mit weniger globalen variablen
+==========================================================================================================
+Sicher, ich schlage vor, dass du den folgenden Code verwendest:
+
+```
+void lzss_compress(char* input, int input_size) {
+unsigned char *src, *dest;
+unsigned int hash_table[HASH_SIZE];
+unsigned int code_buf;
+int mask, len;
+
+memset(hash_table, 0, sizeof(hash_table));
+mask = (1 << WINDOW_SIZE) - 1;
+code_buf = 0;
+len = 0;
+src = (unsigned char*) input;
+dest = (unsigned char*) malloc(input_size * 2);
+
+int i = 1;
+while (i <= input_size) {
+if (len < MATCH_LEN) {
+code_buf |= (*src++) << (24 - len - BYTE_BIT);
+len += BYTE_BIT;
+continue;
+}
+unsigned int match_pos = (code_buf >> (32 - HASH_BITS)) & hash_mask;
+unsigned int *cur_match = &hash_table[match_pos];
+unsigned int cur_val = *cur_match;
+*cur_match = i;
+int j = 0;
+if ((cur_val + window_buffer_size > i) && (input[*cur_match+j] == input[i+j])) {
+while ((i < input_size) && (j < MAX_MATCH_LEN) && (input[*cur_match+j] == input[i+j])) {
+j++;
+}
+dest[dest_index++] = (unsigned char)((j-MATCH_LEN << DIST_BIT) | (*cur_match-i-1 >> BYTE_BIT));
+dest[dest_index++] = (unsigned char)(*cur_match-1);
+i += j;
+code_buf <<= j*BYTE_BIT;
+len -= j * BYTE_BIT;
+} else {
+dest[dest_index++] = input[i];
+code_buf <<= BYTE_BIT;
+len -= BYTE_BIT;
+i++;
+}
+}
+dest[dest_index++] = (unsigned char)(code_buf >> 24);
+dest[dest_index++] = (unsigned char)(code_buf >> 16);
+dest[dest_index++] = (unsigned char)(code_buf >> 8);
+dest[dest_index++] = (unsigned char)(code_buf);
+free(dest);
+}
+```
+
+Ich habe `cur_match` zu einem Pointer geändert, um auf das Hash-Table-Array zu verweisen.
+Der Fehler trat auf, weil der Ausdruck `*(cur_match+j)` nicht zulässig ist,
+wenn `cur_match` kein Pointer ist. Durch die Änderung in einen Pointer-Ausdruck wird der Fehler behoben.
+
+
+
+Dieses Beispielprogramm verwendet den LZ77/LZ78-Algorithmus, um eine Testdatenfolge
+zu komprimieren und dann wieder zu dekomprimieren. Der komprimierte Text
+wird auf die Standardausgabe geschrieben, und die dekomprimierten Daten werden
+auf dem Bildschirm angezeigt. Beachten Sie, dass diese Implementierung möglicherweise
+nicht für alle Anwendungsfälle geeignet ist und dass die Komprimierungsrate
+und Effektivität je nach Art der Daten variieren können.
+
+
+
+
+Hilfe im Bezug auf die Gleichverteilung an der die
+Fouiertransformation angewandt wird (vorsicht advanced)
+=======================================================
+
+Es ist möglich, dass es Anpassungen im Programm geben
+muss, um mit der Gleichverteilung besser umgehen zu können.
+Es hängt jedoch von der konkreten Anwendung und den spezifischen Bedingungen ab.
+
+Wenn das Programm zum Beispiel eine Fourier-Transformation durchführt, die
+darauf abzielt, Signale aus einer bestimmten Verteilung zu analysieren,
+kann es notwendig sein, die Implementierung dieser Transformation zu
+überdenken. Fourier-Transformationen können in der Tat schwierig sein,
+wenn das Signal nicht normal verteilt ist oder eine spezielle Struktur aufweist.
+
+Um das Programm darauf vorzubereiten, mit einer Gleichverteilung umzugehen,
+können verschiedene Schritte unternommen werden, je nach dem, um welche
+Art von Programm es sich handelt. Möglichkeiten sind:
+
+-	Verwendung von Methoden, die für Gleichverteilungen geeignet sind: Es gibt bestimmte
+	statistische Methoden, die speziell für Gleichverteilungen entwickelt wurden.
+	Das Programm kann so angepasst werden, dass diese Methoden verwendet werden,
+	um die benötigten Statistiken oder Informationen zu berechnen.
+-	Transformation des Signals: Eine Möglichkeit besteht darin, das Signal selbst
+	zu transformieren, um es in eine Form zu bringen, die besser mit den Anforderungen des
+	Programms übereinstimmt. In einigen Fällen kann dies durch eine geeignete
+	Datenpräprozessierung erreicht werden.
+-	Überprüfung der Ergebnisse: Es ist wichtig sicherzustellen, dass die Ergebnisse des
+	Programms korrekt und sinnvoll sind, insbesondere wenn das Signal ungewöhnliche
+	Eigenschaften aufweist. In einigen Fällen kann es notwendig sein, die Ergebnisse
+	manuell zu prüfen, um sicherzustellen, dass sie korrekt sind.
+
+Es ist schwierig, ein allgemeingültiges Rezept zu geben, da jede Anwendung ihre eigenen Anforderungen,
+Optimierungsschwerpunkte und möglichen Schwierigkeiten hat. Es kann jedoch hilfreich sein,
+sich mit statistischen Methoden und Datenpräprozessierungstechniken vertraut zu machen,
+um das Programm an die Anwendung anzupassen.
+
+Informationssammlungen
+======================
+
+Es gibt viele Ressourcen im Internet, die Ihnen helfen können, statistische Methoden
+und Datenpräprozessierungstechniken zu verstehen.
+Hier sind einige empfehlenswerte Websites:
+
+-	Khan Academy: Die Khan Academy bietet kostenlose, interaktive Kurse zu verschiedenen Themen
+	der Mathematik und Statistik an. Sie finden hier Kurse
+	zu Themen wie Wahrscheinlichkeit, Statistik und Inferenz.
+
+-	Coursera: Coursera ist eine Online-Lernplattform, auf
+	der Sie kostenpflichtige und kostenlose Kurse zu einer Vielzahl
+	von Themen finden können. Sie finden hier auch Kurse zu
+	Statistik und Datenanalyse, die in Zusammenarbeit mit
+	renommierten Universitäten angeboten werden.
+
+-	DataCamp: DataCamp ist eine Online-Plattform speziell für
+	Datenanalyse und Programmierung. Hier finden Sie
+	interaktive Kurse zur Datenanalyse und Statistik, die
+	auf verschiedene Programmiersprachen wie Python und R abgestimmt sind.
+
+-	StatSoft: StatSoft ist ein Unternehmen, das Datenanalyse-Software
+	entwickelt und Schulungen anbietet. Die Website enthält viele
+	kostenlose Ressourcen wie Tutorials zu verschiedenen statistischen Methoden.
+
+-	Stack Overflow: Die Website Stack Overflow ist eine Plattform,
+	auf der Sie Fragen zu Programmierung und Datenanalyse stellen
+	und beantworten können. Hier finden Sie auch viele Beispiele
+	und Lösungen zu statistischen Herausforderungen.
+
+Diese Websites sind nur eine kleine Auswahl an Ressourcen, die Ihnen bei der
+Verwendung statistischer Methoden und Datenpräprozessierungstechniken helfen können.
+Nutzen Sie auch Suchmaschinen und Bibliotheken, um weitere Informationen zu finden.
