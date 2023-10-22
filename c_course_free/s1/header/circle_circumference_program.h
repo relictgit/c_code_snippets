@@ -1,0 +1,6 @@
+#ifndef CIRCLE_CIRCUMFERENCE_PROGRAM_H
+#define CIRCLE_CIRCUMFERENCE_PROGRAM_H
+
+int circle_circumference();
+
+#endif // CIRCLE_CIRCUMFERENCE_PROGRAM_H
