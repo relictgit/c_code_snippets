@@ -1,9 +1,9 @@
-#include "../header/circle_circumference_program.h"
+#include "../header/hypotenuse_calculator.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main() {
   printf("Hello World!\n");
-  circle_circumference();
+  hypotenuse();
   return 0;
 }

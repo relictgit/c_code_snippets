@@ -1,0 +1,6 @@
+#ifndef HYPOTENUSE_CALCULATOR_H
+#define HYPOTENUSE_CALCULATOR_H
+
+short hypotenuse();
+
+#endif // HYPOTENUSE_CALCULATOR_H
