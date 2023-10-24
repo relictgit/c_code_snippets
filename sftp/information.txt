@@ -1,0 +1,65 @@
+fragen und Antworten zur Informationssammlung an chatgpt
+
+Frage:
+Ich habe eine Frage.
+Zunächst mal eine Einleitung in das Thema, was mich gerade festhält.
+Ich programmiere gerne in der C Programmiersprache.
+Es gibt die Möglichkeit Daten auf ein Remote PC via FTP Protokoll in C zu übertragen.
+FTP ist aber im klartext und dementsprechend nicht sicher.
+Nun zur Frage.
+Gibt es in der C Programmiersprache auch eine sichere Möglichkeit Daten auf einen Remote Host zu übertragen?
+Wäre es möglich das SFTP Protokoll zu verwenden?
+Ich finde dazu recht wenig im Internet.
+
+AW:
+Ja, es ist möglich, das SFTP (SSH File Transfer Protocol)
+Protokoll in der C Programmiersprache zu verwenden,
+um Daten sicher auf einen Remote Host zu übertragen.
+SFTP basiert auf dem SSH-Protokoll und bietet eine sichere Möglichkeit,
+Daten zu übertragen, da es die Daten verschlüsselt
+und die Authentifizierung des Benutzers durch SSH ermöglicht.
+
+Um SFTP in C zu implementieren, können Sie eine SFTP-Bibliothek wie "libssh2" verwenden.
+Diese Bibliothek stellt Funktionen zur Verfügung, um eine sichere
+Verbindung zum Remote-Host herzustellen, Dateien hochzuladen
+und herunterzuladen sowie andere SFTP-Operationen durchzuführen.
+
+Es ist möglich, dass Sie im Internet nicht viele Ressourcen
+zur Verwendung von SFTP in der C Programmiersprache finden,
+da FTP allgemein als nicht sicher angesehen wird und SFTP
+als bevorzugte alternative Methode verwendet wird.
+Ich empfehle Ihnen, nach Ressourcen zur Verwendung von libssh2 oder
+anderen SFTP-Bibliotheken zu suchen, um Anleitungen und Beispiele
+zur Integration von SFTP in Ihre C-Programme zu finden.
+
+Frage:
+Kannst du mir bitte offene oder open source Dokumentationsmaterialien
+für die Nutzung der "libssh2" Bibliothek für die Programmiersprache C bereitstellen?
+
+AW:
+Ja, gerne! Hier sind einige offene oder Open-Source-Dokumentationsmaterialien
+für die Verwendung der "libssh2" Bibliothek in der Programmiersprache C:
+
+1. Offizielle libssh2-Dokumentation: Die offizielle libssh2-Website bietet 
+   umfangreiche Dokumentationen für verschiedene Versionen der Bibliothek.
+   Hier ist der Link zur neuesten Version: https://www.libssh2.org/documentation.html
+
+2. GitHub-Repository: Das GitHub-Repository von libssh2 enthält den gesamten
+   Quellcode der Bibliothek, sowie eine detaillierte Dokumentation.
+   Sie können es hier finden: https://github.com/libssh2/libssh2
+
+3. doxygen-Dokumentation: Die libssh2-Entwickler haben eine
+                          detaillierte doxygen-Dokumentation erstellt, die
+                          die verschiedenen Funktionen und APIs der Bibliothek
+                          beschreibt. Sie können sie 
+                          hier finden: https://www.libssh2.org/doxygen/
+
+4. Video-Tutorials: Es gibt auch einige Video-Tutorials auf Plattformen wie YouTube,
+                    die die Verwendung der libssh2-Bibliothek mit C demonstrieren.
+                    Hier ist ein Beispiel: https://www.youtube.com/watch?v=pthx0rTVqco
+
+Bitte beachten Sie, dass diese Ressourcen Ihnen einen guten Einstiegspunkt
+bieten sollten, um libssh2 in C zu verwenden.
+Es ist empfehlenswert, diese Materialien zu lesen und auf
+die offizielle Dokumentation zu verweisen,
+um die vollständigste und aktuellste Information zu erhalten.
