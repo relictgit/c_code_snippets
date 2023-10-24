@@ -1,0 +1,6 @@
+Information about ncurses
+=========================
+https://invisible-island.net/ncurses/ - official site of ncurses
+https://github.com/mirror/ncurses - github repo
+http://heather.cs.ucdavis.edu/~matloff/UnixAndC/CLanguage/Curses.pdf - "Programming with Curses" from John Strang
+http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ - "NCURSES Programming HOWTO"
