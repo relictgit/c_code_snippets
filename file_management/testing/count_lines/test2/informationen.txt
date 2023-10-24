@@ -1,0 +1,103 @@
+linenum herausfinden:
+
+// Beispielcode zum hochzählen der Zeilennummer, bis foo gefunden wurde.
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+  FILE* file = fopen("example.txt", "r");
+  if (file == NULL) {
+    printf("Fehler beim Öffnen der Datei!\n");
+    return 1;
+  }
+
+  char buffer[256];
+  int lineNumber = 1;
+
+  while (fgets(buffer, sizeof(buffer), file)) {
+    if (strstr(buffer, "foo") != NULL) {
+      printf("foo wurde in Zeile %d gefunden\n", lineNumber);
+      // Hier kannst du den Code einfügen, um die Zeile mit roter Farbe auszugeben
+    }
+    lineNumber += 1;
+  }
+
+  fclose(file);
+
+  return 0;
+}
+
+// Beispiel um wie bei grep die gesamte Zeile anschließend ausgeben zu
+// lassen an der der Suchparameter gefunden wurde mit dem Suchparameter rot
+// hervorgehoben. Hierzu muss eine ANSI-Escape-Sequence verwendet werden
+// Achtung bei der roten Schrift wird alles in rot ausgegeben.
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+  FILE* file = fopen("example.txt", "r");
+  if (file == NULL) {
+    printf("Fehler beim Öffnen der Datei!\n");
+    return 1;
+  }
+
+  char buffer[256];
+  int lineNumber = 1;
+
+  while (fgets(buffer, sizeof(buffer), file)) {
+    if (strstr(buffer, "foo") != NULL) {
+      printf("foo wurde in Zeile %d gefunden\n", lineNumber);
+
+      // Hier wird der gefundene String in roter Farbe ausgegeben
+      printf("\033[0;31m%s\033[0m", buffer);
+    }
+    lineNumber += 1;
+  }
+
+  fclose(file);
+
+  return 0;
+}
+
+// um nun wie bei grep alles im normalen text zu schreiben und nur den
+// gefundenen Suchbegriff rot zu markieren kann man folgendes machen:
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+  FILE* file = fopen("example.txt", "r");
+  if (file == NULL) {
+    printf("Fehler beim Öffnen der Datei!\n");
+    return 1;
+  }
+
+  char buffer[256];
+  int lineNumber = 1;
+
+  while (fgets(buffer, sizeof(buffer), file)) {
+    char* searchString = "foo";
+    char* searchResult = strstr(buffer, searchString);
+
+    if (searchResult != NULL) {
+      printf("foo wurde in Zeile %d gefunden\n", lineNumber);
+
+      // Der Teil der Zeile vor dem Suchbegriff wird in normaler Farbe geschrieben
+      fwrite(buffer, 1, searchResult - buffer, stdout);
+
+      // Der Suchbegriff wird in roter Farbe geschrieben
+      printf("\033[0;31m%s\033[0m", searchString);
+
+      // Der Teil der Zeile nach dem Suchbegriff wird in normaler Farbe geschrieben
+      printf("%s", searchResult + strlen(searchString));
+    }
+    lineNumber += 1;
+  }
+
+  fclose(file);
+
+  return 0;
+}
+
