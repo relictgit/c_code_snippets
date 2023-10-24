@@ -32,7 +32,7 @@ clean:
 
 # shell commands are a set of keystrokes away
 distribute: clean
-	tar zcvf dist.tgz *
+	tar -cJvf dist.tar.xz *
 
 # @ silences the printing of the command
 # $(info ...) prints output
