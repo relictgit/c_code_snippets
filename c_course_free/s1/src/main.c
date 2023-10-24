@@ -1,9 +1,9 @@
-#include "../header/hypotenuse_calculator.h"
+#include "../header/switch_statements.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main() {
   printf("Hello World!\n");
-  hypotenuse();
+  example_switch_statement();
   return 0;
 }
