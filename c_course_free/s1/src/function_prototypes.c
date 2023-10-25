@@ -4,7 +4,7 @@
 // if no header file is used the function prototype lands here
 // void print_helloworld(char name[], int age);
 
-short function_printing_somethings() {
+short main_function_prototypes() {
   // function prototypes, what are those
   // function declaration, w/o a body, before main()
   // ensures that calls to a function are made with the correct arguments
