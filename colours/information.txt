@@ -1,0 +1,3 @@
+list of ANSI-colors
+===================
+- see URL for further reading: "https://stackovercoder.com.de/programming/4842424/list-of-ansi-color-escape-sequences"
