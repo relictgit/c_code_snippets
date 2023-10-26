@@ -10,13 +10,15 @@ short main_while_loop() {
   char name[25] = "";
   printf("whats your name: ");
   fgets(name, sizeof(name), stdin);
-  name[strlen(name) - 1] = '\0';
+  name[strlen(name) - 1] =
+      '\0'; // get rid of the \n character at the end of the line
 
   while (strlen(name) == 0) {
     printf("You did not enter your name\n");
     printf("What is your name: ");
     fgets(name, sizeof(name), stdin);
-    name[strlen(name) - 1] = '\0';
+    name[strlen(name) - 1] =
+        '\0'; // get rid of the \n character at the end of the line
   }
 
   printf("Hello %s\n", name);
