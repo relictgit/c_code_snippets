@@ -1,0 +1,75 @@
+Idee: Nachvollziehen der tar Funktionalität unter Linux
+
+Empfehlung von chatgpt
+======================
+Frage:
+Ich hänge in einen C Programm Projekt fest und brauche Hilfe.
+Ich wollte ein komplexes Projekt starten, welches wie das Tool tar in Linux Dateien in eine Archivdatei zusammenfasst.
+Später wollte ich mein eigenes Backup Programm in C schreiben,
+welches erkennt, welches ungefähr wie restic arbeiten soll,
+wenn man die Features aufzählt, zu denen beispielsweise Komprimmierung, Deduplikation gehören.
+Doch wo genau fange ich bloß an?
+Wo bekomme ich die notwendigen Materialien, um mich dahingehend zu schulen?
+Gibt es offene, bzw. open source Dokumentation dafür?
+Ich bitte dich um Hilfe.
+
+Antwort:
+Es ist großartig, dass du ein komplexes C-Projekt beginnen möchtest!
+Um loszulegen, könntest du dich mit den Grundlagen von C befassen,
+wenn du sie noch nicht beherrschst. Es gibt viele Online-Ressourcen,
+die du zum Lernen von C nutzen kannst, wie beispielsweise Tutorials,
+Bücher oder Video-Kurse.
+
+Um den tar-ähnlichen Teil deines Projekts zu implementieren,
+könntest du die Funktionen und Eigenschaften von tar analysieren.
+Hierzu könntest du die Manpages von tar in Linux durchsehen und den
+Quellcode von tar studieren, da er Open Source ist. Dies könnte dir
+helfen, die grundlegende Logik und die erforderlichen Datenstrukturen
+für das Archivieren von Dateien zu verstehen.
+
+Für dein Backup-Programm könntest du ähnliche Open-Source-Projekte wie restic
+untersuchen, um zu verstehen, wie sie implementiert sind und welche
+Funktionen sie bieten. Auf GitHub findest du möglicherweise viele Backup-Projekte in C.
+Du könntest ihre Dokumentation lesen und deren Quellcode studieren,
+um ein Verständnis dafür zu entwickeln,
+wie ähnliche Programme umgesetzt werden.
+
+Darüber hinaus gibt es auch allgemeine Bücher über Backup- und Dateisysteme,
+die dir helfen könnten, mehr über die Konzepte hinter solchen Programmen zu erfahren.
+
+Vergiss nicht, dass das Erlernen neuer Technologien und die Entwicklung
+von komplexen Projekten Zeit und Geduld erfordern. Es kann hilfreich sein,
+klein anzufangen und allmählich fortgeschrittenere Konzepte einzuführen.
+Viel Glück bei deinem Projekt!
+
+Frage:
+Du hattest Bücher erwähnt gehabt, die es in der C Programmiersprache zu Baclup- und Dateisysteme geben würde.
+Welche genau hättest du mir da vorgeschlagen?
+
+Antwort:
+Hier sind einige Bücher, die sich mit Backup- und Dateisystemen
+in der C-Programmiersprache befassen:
+
+1. "The Unix Programming Environment" von Brian W. Kernighan
+   und Rob Pike: Dieses Buch behandelt nicht nur die C-Programmierung,
+   sondern auch die Konzepte von Dateisystemen und Backup-Verfahren auf Unix-Systemen.
+
+2. "Advanced Programming in the UNIX Environment" von W. Richard Stevens und Stephen A. Rago:
+   Dieses Buch ist eine umfassende Ressource für die fortgeschrittene C-Programmierung
+   unter Unix und behandelt auch Themen wie Dateisysteme und Backup-Strategien.
+
+3. "Linux System Programming: Talking Directly to the Kernel and C Library"
+   von Robert Love: Obwohl sich dieses Buch hauptsächlich auf die Linux-Plattform
+   konzentriert, deckt es auch wichtige Konzepte und Techniken für Backup- und Dateisysteme ab.
+
+4. "File System Forensic Analysis" von Brian Carrier:
+   Dieses Buch behandelt die Analyse von Dateisystemen und deren
+   Wiederherstellung bei forensischen Untersuchungen.
+   Es ist eine ausgezeichnete Ressource, um ein tieferes
+   Verständnis für Dateisysteme zu entwickeln, was auch
+   für das Entwickeln von Backup-Strategien relevant ist.
+
+Diese Bücher bieten einen soliden Hintergrund für das
+Verständnis von Backup- und Dateisystemsprogrammierung
+in der C-Programmiersprache. Sie können je nach Ihrem
+genauen Interessengebiet ausgewählt werden.
