@@ -15,7 +15,14 @@ short main_nested_loop() {
 
   // getting rid of the \n character
   // scanf("%c"); -- error prone due to not putting an variable behind the
+  // scanf("%c") is not a good practise
   // format specifier
+  // nest practise can be found on geeksforgeeks
+  // with the following best practise to flush the buffer
+  // flushes the standard input
+  // (clears the input buffer)
+  while ((getchar()) != '\n')
+    ;
 
   printf("Enter a symbol to use: ");
   scanf("%c", &symbol);
