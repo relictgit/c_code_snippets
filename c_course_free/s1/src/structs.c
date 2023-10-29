@@ -20,7 +20,7 @@ short main_struct() {
   p2.score = 31;
 
   // method 2 containing deklaration and initialization in one line
-  struct player p3 = {"Mike", 80};
+  /* struct player p3 = {"Mike", 80}; */
 
   printf("Player one: %s has score: %d\n", p1.name, p1.score);
   printf("Player two: %s has score: %d\n", p2.name, p2.score);
