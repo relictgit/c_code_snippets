@@ -12,8 +12,7 @@ DEPFLAGS=-MP -MD
 # automatically add the -I onto each include directory
 CFLAGS_DEBUG=-Wall -Wextra -g $(foreach D,$(INCDIRS),-I$(D)) $(OPT_DEBUG) $(DEPFLAGS)
 CFLAGS_RELEASE=-Wall -Wextra $(foreach D,$(INCDIRS),-I$(D)) $(OPT_RELEASE) $(DEPFLAGS)
-
-LDFLAGS=-lm
+LDFLAGS= # math: -lm | ncurses: -lncurses -ltinfo -lmenu
 
 # for-style iteration (foreach) and regular expression completions (wildcard)
 CFILES=$(foreach D,$(CODEDIRS),$(wildcard $(D)/*.c))
@@ -24,7 +23,7 @@ DEPFILES=$(patsubst %.c,%.d,$(CFILES))
 all: $(BINARY)
 
 $(BINARY): $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^
 
 # only want the .c file dependency here, thus $< instead of $^.
 %.o:%.c

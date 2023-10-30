@@ -1,8 +1,7 @@
 # see https://github.com/gwu-cs-os/evening_os_hour/blob/master/f19/10.2-makefiles/03_featureful_makefile/Makefile
-
 BINARY=bin
-CODEDIRS=. ./src # source files
-INCDIRS=. ./header # can be list of headers
+CODEDIRS=. lib # source files
+INCDIRS=. ./include/ # can be list of headers
 
 CC=gcc
 OPT=-O0
@@ -10,7 +9,6 @@ OPT=-O0
 DEPFLAGS=-MP -MD
 # automatically add the -I onto each include directory
 CFLAGS=-Wall -Wextra -g $(foreach D,$(INCDIRS),-I$(D)) $(OPT) $(DEPFLAGS)
-LDFLAGS=-lm                   # -lm for math.h | -lncurses -ltinfo -lmenu for ncurses (simply put all the specific linker flags inside here that are necessary to compile your code)
 
 # for-style iteration (foreach) and regular expression completions (wildcard)
 CFILES=$(foreach D,$(CODEDIRS),$(wildcard $(D)/*.c))
@@ -21,9 +19,10 @@ DEPFILES=$(patsubst %.c,%.d,$(CFILES))
 all: $(BINARY)
 
 $(BINARY): $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^
 
 # only want the .c file dependency here, thus $< instead of $^.
+#
 %.o:%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
@@ -32,11 +31,10 @@ clean:
 
 # shell commands are a set of keystrokes away
 distribute: clean
-	tar -cJvf dist.tar.xz *
+	tar zcvf dist.tgz *
 
 # @ silences the printing of the command
 # $(info ...) prints output
-
 diff:
 	$(info The status of the repository, and the volume of per-file changes:)
 	@git status
