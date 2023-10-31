@@ -10,23 +10,34 @@ const char COMPUTER = 'O';
 
 short main_tic_tac_toe() {
   char winner = ' ';
+  char response = ' ';
 
-  reset_board();
-  while (winner == ' ' && check_free_spaces() != 0) {
+  do {
+    winner = ' ';
+    response = ' ';
+    reset_board();
+    while (winner == ' ' && check_free_spaces() != 0) {
+      print_board();
+      player_move();
+      winner = check_winner();
+      if (winner != ' ' || check_free_spaces() == 0) {
+        break;
+      }
+      computer_move();
+      winner = check_winner();
+      if (winner != ' ' || check_free_spaces() == 0) {
+        break;
+      }
+    }
     print_board();
-    player_move();
-    winner = check_winner();
-    if (winner != ' ' || check_free_spaces() == 0) {
-      break;
-    }
-    computer_move();
-    winner = check_winner();
-    if (winner != ' ' || check_free_spaces() == 0) {
-      break;
-    }
-  }
-  print_board();
-  print_winner(winner);
+    print_winner(winner);
+    printf("would you like to play again? (y/n): ");
+    while ((getchar()) != '\n')
+      ;
+    scanf("%c", &response);
+    response = tolower(response);
+  } while (response == 'y');
+
   return 0;
 }
 
