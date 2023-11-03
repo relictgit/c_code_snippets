@@ -3,7 +3,8 @@ BasedOnStyle: LLVM
 AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlines: Left
 AlwaysBreakAfterDefinitionReturnType: None
-BreakBeforeBraces: Allman
+# BreakBeforeBraces: Allman|Attach|Linux|Mozilla||Stroustrup|GNU|Webkit|?Custom?
+BreakBeforeBraces: Attach
 ColumnLimit: '100'
 ConstructorInitializerIndentWidth: '4'
 ContinuationIndentWidth: '4'
