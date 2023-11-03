@@ -17,3 +17,7 @@ https://clang.llvm.org/docs/ClangFormat.html
 indentation styles
 ==================
 see also the URL: https://en.wikipedia.org/wiki/Indentation_style
+known styles:
+* 1tbs like style: BreakBeforeBraces == Attach
+* Allman style: BreakBeforeBraces == Allman
+* K&R Linux kernel standard style: BreakBeforeBraces == Linux
