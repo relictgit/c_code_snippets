@@ -1,0 +1,95 @@
+music visualisation UI tool completely written in C
+===================================================
+- https://github.com/tsoding/musializer
+
+---------------------------------------------------
+
+Es ist großartig, dass du dich dafür entschieden hast,
+C-Anwendungen zu schreiben! Hier sind einige Vorschläge, wo du anfangen könntest:
+
+1. Kompression und Dekompression von Daten:
+Du könntest mit der Implementierung von einfachen
+Kompressionsalgorithmen wie Run-Length-Encoding (RLE) beginnen.
+Dies ist ein einfacher Algorithmus, der wiederholte Zeichen
+in einer Zeichenkette komprimiert. Sobald du dich damit
+wohl fühlst, könntest du dich an fortgeschrittenere
+Algorithmen wie Huffman-Kodierung oder Lempel-Ziv-Welch (LZW) wagen.
+
+2. Archivierung von Dateien:
+Ein erster Schritt wäre die Implementierung eines einfachen Dateisystems.
+Du könntest eine Datenstruktur definieren, um die Dateien
+und Verzeichnisse zu repräsentieren, und dann Funktionen schreiben,
+um Dateien in dieses Dateisystem zu schreiben, zu
+lesen und daraus zu löschen. Anschließend könntest
+du Algorithmen wie das Tar-Format oder das Zip-Format
+implementieren, um Dateien in einer archivierten Datei zusammenzufassen.
+
+3. System Monitoring Anwendung:
+Für eine Monitoring-Anwendung könntest du zunächst damit beginnen,
+grundlegende Systeminformationen wie CPU-Auslastung,
+Speicherbelegung und Netzwerkauslastung abzurufen.
+Hierfür könntest du die entsprechenden Bibliotheken in C verwenden,
+z. B. für CPU-Auslastung die Funktionen in der Headerdatei "sys/stat.h".
+Sobald du die Grundlagen beherrschst, könntest du die Anwendung
+um weitere Funktionen wie Prozessüberwachung oder Echtzeitdatenvisualisierung erweitern.
+
+Es ist auch wichtig, dass du während des Entwicklungsprozesses
+viel recherchierst und liest, um dich mit den verschiedenen
+Konzepten und Techniken vertraut zu machen.
+Du könntest zum Beispiel Tutorials oder Bücher zu den
+jeweiligen Bereichen lesen, um dein Verständnis zu vertiefen.
+
+Wenn die genannten Themen zu komplex erscheinen, könntest
+du auch mit kleineren Projekten beginnen, um dich mit
+der C-Programmierung vertrauter zu machen. Zum Beispiel
+könntest du eine einfache Textverarbeitungsanwendung,
+ein Tic-Tac-Toe-Spiel oder einen Taschenrechner entwickeln.
+Durch solche Projekte bekommst du mehr Erfahrung und kannst
+später komplexere Anwendungen angehen.
+
+Viel Erfolg bei deinen zukünftigen C-Anwendungen!
+
+Es gibt viele Ressourcen, die du nutzen kannst,
+um dich über die verschiedenen Themen zu informieren
+und mehr darüber zu lernen. Hier sind einige Vorschläge:
+
+1. Kompression und Dekompression von Daten:
+- Ein gutes Buch zum Einstieg ist "Data Compression: The Complete Reference"
+  von Salomon und Sayood. Es deckt eine breite Palette von
+  Kompressionsalgorithmen ab und bietet praktische
+  Beispiele und Implementierungen.
+- Es gibt auch viele Online-Tutorials und Blogs, die sich
+  mit Kompressionsalgorithmen befassen.
+  Eine Google-Suche nach den Namen der Algorithmen,
+  z. B. "Huffman coding tutorial", sollte viele hilfreiche Ergebnisse liefern.
+
+2. Archivierung von Dateien:
+- Das Buch "The UNIX Programming Environment" von Kernighan und
+  Pike bietet eine gute Einführung in die Arbeit mit Dateisystemen
+  und Dateiarchivierung auf Unix-Systemen.
+- Die Dokumentation der zlib-Bibliothek ist eine gute Ressource
+  für die Implementierung von Archivierungsformaten wie dem Zip-Format.
+  Die zlib-Bibliothek selbst kann auch als Referenz verwendet werden.
+
+3. System Monitoring Anwendung:
+- Eine gute Möglichkeit, grundlegende Systeminformationen in C abzurufen,
+  besteht darin, die entsprechenden Linux-Headerdateien zu studieren,
+  z. B. "sys/sysinfo.h" für allgemeine
+  Systeminformationen oder "sys/resource.h" für Prozessinformationen.
+- Das Buch "Unix Systems Programming: Communication, Concurrency,
+  and Threads" von Robbins und Robbins behandelt auch das Thema
+  System Monitoring und bietet praktische Beispiele zur Implementierung solcher Funktionen.
+
+Darüber hinaus können Online-Ressourcen wie Websites, Foren und Mailinglisten
+für C-Programmierer hilfreich sein, um Fragen zu stellen und weitere
+Unterstützung zu erhalten. Es lohnt sich auch, die offizielle
+Dokumentation der C-Standardbibliothek zu lesen und zu verstehen.
+
+Denke daran, während des Lernprozesses viel zu experimentieren
+und kleine Beispiele auszuprobieren. Das gibt dir die Möglichkeit,
+das Gelernte praktisch anzuwenden und ein besseres Verständnis für die Konzepte zu entwickeln.
+
+Viel Glück bei deinem Vorhaben, ein Backup-Programm in C zu entwickeln,
+und hoffentlich helfen dir diese Ressourcen, dein Ziel zu erreichen!
+
+---------------------------------------------------

@@ -1,3 +1,10 @@
+resources
+=========
+
+- https://exercism.org/tracks/c/exercises
+
+
+
 Idee: Nachvollziehen der tar Funktionalität unter Linux
 
 Empfehlung von chatgpt

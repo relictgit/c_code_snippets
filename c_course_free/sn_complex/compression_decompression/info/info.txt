@@ -1,0 +1,2 @@
+run length encoding and decoding
+https://exercism.org/tracks/c/exercises/run-length-encoding
