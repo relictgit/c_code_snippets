@@ -6,23 +6,23 @@
 
 short main_read_file ()
 {
-    FILE *fptr = NULL;
-    char buffer[300] = "";
-    int buffer_size = sizeof (buffer) / sizeof (buffer[0]);
+  FILE *fptr = NULL;
+  char buffer[300] = "";
+  int buffer_size = sizeof (buffer) / sizeof (buffer[0]);
 
-    if ((fptr = fopen ("test.txt", "r")) == NULL)
+  if ((fptr = fopen ("test.txt", "r")) == NULL)
+  {
+    fprintf (stderr, "Could not open file!\nErrorcode is: %s\n", strerror (errno));
+    exit (EXIT_FAILURE);
+  }
+  else
+  {
+    while ((fgets (buffer, buffer_size, fptr)) != NULL)
     {
-        fprintf (stderr, "Could not open file!\nErrorcode is: %s\n", strerror (errno));
-        exit (EXIT_FAILURE);
+      printf ("%s\n", buffer);
     }
-    else
-    {
-        while ((fgets (buffer, buffer_size, fptr)) != NULL)
-        {
-            printf ("%s\n", buffer);
-        }
-        fclose (fptr);
-    }
+    fclose (fptr);
+  }
 
-    return 0;
+  return 0;
 }

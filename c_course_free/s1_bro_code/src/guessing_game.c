@@ -5,43 +5,43 @@
 
 short main_guessing_game ()
 {
-    const int MIN = 1;
-    const int MAX = 100;
-    int guess = 0;
-    int guesses = 0;
-    int answer = 0;
+  const int MIN = 1;
+  const int MAX = 100;
+  int guess = 0;
+  int guesses = 0;
+  int answer = 0;
 
-    // uses current time as a seed
-    srand (time (0));
+  // uses current time as a seed
+  srand (time (0));
 
-    // generate a rand number between MIN and MAX
-    answer = (rand () % MAX) + MIN;
+  // generate a rand number between MIN and MAX
+  answer = (rand () % MAX) + MIN;
 
-    /* printf("answer is: %d\n", answer); */
+  /* printf("answer is: %d\n", answer); */
 
-    do
+  do
+  {
+    printf ("Ener a guess: ");
+    scanf ("%d", &guess);
+    if (guess > answer)
     {
-        printf ("Ener a guess: ");
-        scanf ("%d", &guess);
-        if (guess > answer)
-        {
-            printf ("guess: %d --- is to high\n", guess);
-        }
-        else if (guess < answer)
-        {
-            printf ("guess: %d --- is to low\n", guess);
-        }
-        else
-        {
-            printf ("CORRECT!\n");
-        }
-        guesses++;
-    } while (guess != answer);
+      printf ("guess: %d --- is to high\n", guess);
+    }
+    else if (guess < answer)
+    {
+      printf ("guess: %d --- is to low\n", guess);
+    }
+    else
+    {
+      printf ("CORRECT!\n");
+    }
+    guesses++;
+  } while (guess != answer);
 
-    printf ("===========================================\n");
-    printf ("answer: %d\n", answer);
-    printf ("guesses: %d\n", guesses);
-    printf ("===========================================\n");
+  printf ("===========================================\n");
+  printf ("answer: %d\n", answer);
+  printf ("guesses: %d\n", guesses);
+  printf ("===========================================\n");
 
-    return 0;
+  return 0;
 }
