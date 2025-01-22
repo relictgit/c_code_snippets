@@ -469,3 +469,145 @@ int main( ) {
  * Schließen der Datei. */
 /* Fehlerbehandlung: Jeder Fehler wird klar beschrieben, was dem Benutzer hilft, das Problem besser
  * zu verstehen und zu diagnostizieren. */
+
+// same code with somewhat exception handling in C (C does not have exception handling, but it can
+// be manually be implemented)
+
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAX_LINE_LENGTH 256
+#define MAX_MONTH_LENGTH 20
+#define SUCCESS 0
+#define ERROR -1
+
+// Fehlercodes
+typedef enum {
+  ERR_GET_TIME = 1,
+  ERR_CONVERT_TIME,
+  ERR_INVALID_MONTH,
+  ERR_OPEN_FILE,
+  ERR_READ_FILE,
+  ERR_CLOSE_FILE
+} ErrorCode;
+
+// Funktion zum Drucken von spezifischen Fehlermeldungen
+void print_error( ErrorCode err ) {
+  switch( err ) {
+  case ERR_GET_TIME:
+    fprintf( stderr, "Fehler: Konnte aktuelle Zeit nicht abrufen (%s)\n", strerror( errno ) );
+    break;
+  case ERR_CONVERT_TIME:
+    fprintf( stderr, "Fehler: Beim Konvertieren der Zeit (%s)\n", strerror( errno ) );
+    break;
+  case ERR_INVALID_MONTH:
+    fprintf( stderr, "Fehler: Ungültiger Monatswert erhalten\n" );
+    break;
+  case ERR_OPEN_FILE:
+    fprintf( stderr, "Fehler: Konnte Datei nicht öffnen (%s)\n", strerror( errno ) );
+    break;
+  case ERR_READ_FILE:
+    fprintf( stderr, "Fehler: Beim Lesen der Datei (%s)\n", strerror( errno ) );
+    break;
+  case ERR_CLOSE_FILE:
+    fprintf( stderr, "Fehler: Beim Schließen der Datei (%s)\n", strerror( errno ) );
+    break;
+  default:
+    fprintf( stderr, "Unbekannter Fehler\n" );
+  }
+}
+
+// Funktion, um den aktuellen Monat als String zu bekommen
+int get_current_month( char *month_str ) {
+  time_t t;
+  struct tm *tm;
+
+  t = time( NULL );
+  if( t == ( time_t ) -1 )
+    return ERR_GET_TIME;
+
+  tm = localtime( &t );
+  if( tm == NULL )
+    return ERR_CONVERT_TIME;
+
+  switch( tm->tm_mon ) {
+  case 0:
+    strcpy( month_str, "[january]" );
+    break;
+  case 1:
+    strcpy( month_str, "[february]" );
+    break;
+  // ... für die anderen Monate analog ...
+  case 11:
+    strcpy( month_str, "[december]" );
+    break;
+  default:
+    return ERR_INVALID_MONTH;
+  }
+  return SUCCESS;
+}
+
+// Funktion zum Lesen der Datei und Drucken der Zeilen für einen spezifischen Monat
+int read_and_print_month_lines( const char *filename, const char *month_str ) {
+  FILE *file = fopen( filename, "r" );
+  if( file == NULL )
+    return ERR_OPEN_FILE;
+
+  char line[MAX_LINE_LENGTH];
+  int print_lines = 0;
+
+  while( fgets( line, MAX_LINE_LENGTH, file ) != NULL ) {
+    if( ferror( file ) ) {
+      fclose( file ); // Schließe Datei vor dem Rückgabewert, um Ressourcenlecks zu vermeiden
+      return ERR_READ_FILE;
+    }
+
+    if( strstr( line, month_str ) != NULL ) {
+      print_lines = 1;
+    } else if( print_lines && line[0] == '[' ) {
+      break;
+    }
+
+    if( print_lines ) {
+      printf( "%s", line );
+    }
+  }
+
+  if( ferror( file ) ) {
+    fclose( file );
+    return ERR_READ_FILE;
+  }
+
+  if( fclose( file ) != 0 )
+    return ERR_CLOSE_FILE;
+  return SUCCESS;
+}
+
+int main( ) {
+  char month_str[MAX_MONTH_LENGTH];
+  int result = get_current_month( month_str );
+  if( result != SUCCESS ) {
+    print_error( ( ErrorCode ) result );
+    return ERROR;
+  }
+
+  result = read_and_print_month_lines( "deine_datei.txt", month_str );
+  if( result != SUCCESS ) {
+    print_error( ( ErrorCode ) result );
+    return ERROR;
+  }
+
+  return SUCCESS;
+}
+
+/* explanation of the above code in german */
+/* Fehlercodes: Es werden spezifische Fehlercodes definiert, um verschiedene Fehlerarten zu
+ * unterscheiden. */
+/* Fehlerbehandlung: Jede Funktion gibt einen Fehlercode zurück, der dann im main-Programm behandelt
+ * wird. */
+/* Rückgabewerte: Statt direkt exit() zu rufen, geben Funktionen den Fehlercode zurück,
+ * und main entscheidet, ob das Programm beendet oder fortgesetzt werden soll. */
+/* Modularität: Durch die Aufteilung in Funktionen wird der Code lesbarer und Wartung einfacher. */
